@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Dashboard - Bệnh nhân";
+    var fullName = User.Claims.FirstOrDefault(c => c.Type == "full_name")?.Value ?? User.Identity?.Name;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Dashboard Bệnh nhân</h2>
+        <div class="text-muted">Xin chào, @fullName</div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Bác sĩ</h5>
+                <div class="text-muted mb-3">Xem danh sách bác sĩ theo khoa/chuyên khoa</div>
+                <a class="btn btn-outline-primary" asp-controller="PatientDoctors" asp-action="Index">Danh sách bác sĩ</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Lịch hẹn</h5>
+                <div class="text-muted mb-3">Kiểm tra lịch hẹn và đặt lịch khám</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-outline-secondary" asp-controller="PatientAppointments" asp-action="Index">Lịch hẹn của tôi</a>
+                    <a class="btn btn-success" asp-controller="PatientAppointments" asp-action="Book">Đặt lịch khám</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Hóa đơn</h5>
+                <div class="text-muted mb-3">Xem hóa đơn, tải xuống hoặc in hóa đơn</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-outline-secondary" asp-controller="PatientBilling" asp-action="Invoices">Danh sách hóa đơn</a>
+                    <a class="btn btn-outline-secondary" asp-controller="PatientBilling" asp-action="Payments">Lịch sử thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

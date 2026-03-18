@@ -1,0 +1,60 @@
+@model List<FinalProject.Models.Appointment>
+@{
+    ViewData["Title"] = "Lịch hẹn của tôi";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Lịch hẹn của tôi</h2>
+        <div class="text-muted">Theo dõi lịch khám và trạng thái</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-success" asp-action="Book">Đặt lịch khám</a>
+        <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Patient">Về dashboard</a>
+    </div>
+</div>
+
+@if (TempData["Success"] is string success && !string.IsNullOrWhiteSpace(success))
+{
+    <div class="alert alert-success">@success</div>
+}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Bác sĩ</th>
+                    <th>Thời gian</th>
+                    <th>Trạng thái</th>
+                    <th>Lý do</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Bạn chưa có lịch hẹn nào.</td>
+                </tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@a.Doctor?.User?.FullName</td>
+                        <td>@a.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td><span class="badge bg-secondary">@a.Status</span></td>
+                        <td class="text-truncate" style="max-width: 320px;">@a.Reason</td>
+                    </tr>
+                    i++;
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+

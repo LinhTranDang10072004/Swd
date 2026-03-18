@@ -1,0 +1,40 @@
+@model FinalProject.Models.Doctor
+@{
+    ViewData["Title"] = "Chi tiết bác sĩ";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Chi tiết bác sĩ</h2>
+        <div class="text-muted">@Model.User.FullName</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-controller="PatientAppointments" asp-action="Book" asp-route-doctorId="@Model.DoctorId">Đặt lịch với bác sĩ này</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Quay lại</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.User.FullName</dd>
+
+            <dt class="col-sm-3">Username</dt>
+            <dd class="col-sm-9">@Model.User.Username</dd>
+
+            <dt class="col-sm-3">Khoa/Chuyên khoa</dt>
+            <dd class="col-sm-9">@Model.Specialty?.SpecialtyName</dd>
+
+            <dt class="col-sm-3">Phòng ban</dt>
+            <dd class="col-sm-9">@Model.Department</dd>
+
+            <dt class="col-sm-3">Số giấy phép</dt>
+            <dd class="col-sm-9">@Model.LicenseNumber</dd>
+
+            <dt class="col-sm-3">Kinh nghiệm</dt>
+            <dd class="col-sm-9">@Model.YearsExperience</dd>
+        </dl>
+    </div>
+</div>
+

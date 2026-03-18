@@ -1,0 +1,64 @@
+@model List<FinalProject.Models.Appointment>
+@{
+    ViewData["Title"] = "Quản lý lịch hẹn";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Quản lý lịch hẹn</h2>
+        <div class="text-muted">Danh sách lịch hẹn gần đây (tối đa 50)</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-success" asp-controller="Appointments" asp-action="Lookup">Thêm mới lịch hẹn</a>
+        <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Receptionist">Về dashboard</a>
+    </div>
+</div>
+
+@if (TempData["Success"] is string success && !string.IsNullOrWhiteSpace(success))
+{
+    <div class="alert alert-success">@success</div>
+}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Bệnh nhân</th>
+                    <th>CMND/CCCD</th>
+                    <th>Bác sĩ</th>
+                    <th>Thời gian</th>
+                    <th>Trạng thái</th>
+                    <th>Lý do</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Chưa có lịch hẹn nào.</td>
+                </tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@a.Patient?.FullName</td>
+                        <td>@a.Patient?.NationalId</td>
+                        <td>@a.Doctor?.User?.FullName</td>
+                        <td>@a.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td><span class="badge bg-secondary">@a.Status</span></td>
+                        <td class="text-truncate" style="max-width: 260px;">@a.Reason</td>
+                    </tr>
+                    i++;
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+

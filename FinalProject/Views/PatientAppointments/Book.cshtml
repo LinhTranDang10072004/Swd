@@ -1,0 +1,194 @@
+@model FinalProject.ViewModels.PatientAppointmentBookViewModel
+@{
+    ViewData["Title"] = "Đặt lịch khám";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Đặt lịch khám</h2>
+        <div class="text-muted">Chọn khoa → bác sĩ → khung giờ trống</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">Về lịch hẹn</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Book" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <input asp-for="AppointmentDate" type="hidden" />
+            <input asp-for="PreselectedDoctorId" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label asp-for="SpecialtyId" class="form-label"></label>
+                <select asp-for="SpecialtyId" asp-items="Model.Specialties" class="form-select" id="specialtySelect">
+                    <option value="">-- Chọn khoa/chuyên khoa --</option>
+                </select>
+                <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="DoctorId" class="form-label"></label>
+                <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select" id="doctorSelect" disabled>
+                    <option value="">-- Chọn bác sĩ --</option>
+                </select>
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Ngày khám</label>
+                <input class="form-control" type="date" id="dateSelect" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <div class="form-text">Chọn ngày để xem các khung giờ trống</div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Khung giờ trống</label>
+                <select class="form-select" id="slotSelect" disabled>
+                    <option value="">-- Chọn khung giờ --</option>
+                </select>
+                <div class="form-text" id="slotHelp">Vui lòng chọn khoa và bác sĩ trước.</div>
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Thời gian hẹn đã chọn</label>
+                <input class="form-control" id="chosenSlotText" value="" readonly />
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Reason" class="form-label"></label>
+                <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Xác nhận đặt lịch</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const specialtySelect = document.getElementById('specialtySelect');
+            const doctorSelect = document.getElementById('doctorSelect');
+            const dateSelect = document.getElementById('dateSelect');
+            const slotSelect = document.getElementById('slotSelect');
+            const slotHelp = document.getElementById('slotHelp');
+            const chosenSlotText = document.getElementById('chosenSlotText');
+            const appointmentDateHidden = document.querySelector('input[name="AppointmentDate"]');
+            const submitBtn = document.getElementById('submitBtn');
+            const preselectedDoctorId = document.querySelector('input[name="PreselectedDoctorId"]')?.value;
+
+            const doctorsUrl = '@Url.Action("DoctorsBySpecialty", "PatientAppointments")';
+            const slotsUrl = '@Url.Action("AvailableSlots", "PatientAppointments")';
+
+            function resetDoctors() {
+                doctorSelect.innerHTML = '<option value="">-- Chọn bác sĩ --</option>';
+                doctorSelect.disabled = true;
+            }
+
+            function resetSlots(message) {
+                slotSelect.innerHTML = '<option value="">-- Chọn khung giờ --</option>';
+                slotSelect.disabled = true;
+                slotHelp.textContent = message || 'Vui lòng chọn khoa và bác sĩ trước.';
+                chosenSlotText.value = '';
+                appointmentDateHidden.value = '';
+                submitBtn.disabled = true;
+            }
+
+            async function loadDoctors() {
+                resetDoctors();
+                resetSlots('Vui lòng chọn bác sĩ để xem lịch trống.');
+
+                const specialtyId = specialtySelect.value;
+                if (!specialtyId) {
+                    resetSlots('Vui lòng chọn khoa/chuyên khoa.');
+                    return;
+                }
+
+                const resp = await fetch(`${doctorsUrl}?specialtyId=${encodeURIComponent(specialtyId)}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!resp.ok) return;
+
+                const doctors = await resp.json();
+                for (const d of doctors) {
+                    const opt = document.createElement('option');
+                    opt.value = d.id;
+                    opt.textContent = d.name;
+                    doctorSelect.appendChild(opt);
+                }
+                doctorSelect.disabled = false;
+
+                if (preselectedDoctorId) {
+                    doctorSelect.value = preselectedDoctorId;
+                    await loadSlots();
+                }
+            }
+
+            async function loadSlots() {
+                resetSlots('Đang tải lịch trống...');
+
+                const doctorId = doctorSelect.value;
+                const date = dateSelect.value;
+                if (!doctorId || !date) {
+                    resetSlots('Vui lòng chọn bác sĩ và ngày khám.');
+                    return;
+                }
+
+                const resp = await fetch(`${slotsUrl}?doctorId=${encodeURIComponent(doctorId)}&date=${encodeURIComponent(date)}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!resp.ok) {
+                    resetSlots('Không tải được lịch trống. Thử lại.');
+                    return;
+                }
+
+                const slots = await resp.json();
+                if (!slots || slots.length === 0) {
+                    resetSlots('Không có khung giờ trống (hoặc chưa có lịch làm việc).');
+                    return;
+                }
+
+                slotSelect.disabled = false;
+                slotHelp.textContent = 'Chọn khung giờ trống để đặt lịch.';
+                for (const s of slots) {
+                    const opt = document.createElement('option');
+                    opt.value = s.value;
+                    opt.textContent = s.label;
+                    slotSelect.appendChild(opt);
+                }
+            }
+
+            function selectSlot() {
+                const v = slotSelect.value;
+                if (!v) {
+                    chosenSlotText.value = '';
+                    appointmentDateHidden.value = '';
+                    submitBtn.disabled = true;
+                    return;
+                }
+
+                appointmentDateHidden.value = v;
+                chosenSlotText.value = slotSelect.options[slotSelect.selectedIndex].text;
+                submitBtn.disabled = false;
+            }
+
+            specialtySelect.addEventListener('change', loadDoctors);
+            doctorSelect.addEventListener('change', loadSlots);
+            dateSelect.addEventListener('change', loadSlots);
+            slotSelect.addEventListener('change', selectSlot);
+
+            resetDoctors();
+            if (specialtySelect.value) {
+                loadDoctors();
+            } else {
+                resetSlots('Vui lòng chọn khoa/chuyên khoa.');
+            }
+        })();
+    </script>
+}
+

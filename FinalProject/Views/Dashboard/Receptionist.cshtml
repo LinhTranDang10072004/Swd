@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Dashboard - Lễ tân";
+    var fullName = User.Claims.FirstOrDefault(c => c.Type == "full_name")?.Value ?? User.Identity?.Name;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Dashboard Lễ tân</h2>
+        <div class="text-muted">Xin chào, @fullName</div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Đăng ký bệnh nhân</h5>
+                <div class="text-muted mb-3">Tạo mới hồ sơ bệnh nhân (nhập họ tên, CMND/CCCD…)</div>
+                <a class="btn btn-primary" asp-controller="Receptionist" asp-action="RegisterPatient">Mở màn hình đăng ký</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quản lý lịch hẹn</h5>
+                <div class="text-muted mb-3">Xem danh sách lịch hẹn và thêm mới lịch hẹn</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-outline-secondary" asp-controller="Receptionist" asp-action="Appointments">Danh sách lịch hẹn</a>
+                    <a class="btn btn-success" asp-controller="Receptionist" asp-action="NewAppointment">Thêm mới lịch hẹn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

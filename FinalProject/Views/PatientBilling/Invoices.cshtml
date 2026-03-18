@@ -1,0 +1,67 @@
+@model List<FinalProject.Models.Invoice>
+@{
+    ViewData["Title"] = "Hóa đơn của tôi";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Hóa đơn của tôi</h2>
+        <div class="text-muted">Kiểm tra hóa đơn đã/ chưa thanh toán</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" asp-action="Payments">Lịch sử thanh toán</a>
+        <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Patient">Về dashboard</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Ngày xuất</th>
+                    <th>Lịch hẹn</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thành tiền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">Chưa có hóa đơn nào.</td>
+                </tr>
+            }
+            else
+            {
+                var i = 1;
+                foreach (var inv in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@inv.IssuedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            @if (inv.Appointment?.Doctor?.User?.FullName is string doc && !string.IsNullOrWhiteSpace(doc))
+                            {
+                                <div>@doc</div>
+                                <div class="text-muted small">@inv.Appointment?.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</div>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge @(inv.Status == "PAID" ? "bg-success" : "bg-warning text-dark")">@inv.Status</span>
+                        </td>
+                        <td class="text-end">@inv.FinalAmount.ToString("N0")</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Invoice" asp-route-id="@inv.InvoiceId">Chi tiết</a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+

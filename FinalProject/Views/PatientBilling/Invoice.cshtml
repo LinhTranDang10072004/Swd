@@ -1,0 +1,100 @@
+@model FinalProject.Models.Invoice
+@{
+    ViewData["Title"] = $"Hóa đơn #{Model.InvoiceId}";
+    var paidTotal = Model.Payments.Where(p => p.Status == "SUCCESS").Sum(p => p.AmountPaid);
+    var isPaid = Model.Status == "PAID" || paidTotal >= Model.FinalAmount;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Hóa đơn #@Model.InvoiceId</h2>
+        <div class="text-muted">Ngày xuất: @Model.IssuedAt.ToString("dd/MM/yyyy HH:mm")</div>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" asp-action="Invoices">Quay lại</a>
+        <a class="btn btn-outline-primary" asp-action="DownloadInvoice" asp-route-id="@Model.InvoiceId">Tải xuống</a>
+        <button class="btn btn-primary" type="button" onclick="window.print()">In</button>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div><b>Bệnh nhân</b>: @Model.Patient.FullName</div>
+                <div><b>Trạng thái</b>: <span class="badge @(isPaid ? "bg-success" : "bg-warning text-dark")">@(isPaid ? "PAID" : Model.Status)</span></div>
+                @if (Model.Appointment?.Doctor?.User?.FullName is string doc && !string.IsNullOrWhiteSpace(doc))
+                {
+                    <div class="mt-2"><b>Lịch hẹn</b>: @doc</div>
+                    <div class="text-muted">@Model.Appointment?.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                {
+                    <div class="mt-2"><b>Ghi chú</b>: @Model.Notes</div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <table class="table mb-0">
+                    <tr><th>Tổng tiền</th><td class="text-end">@Model.TotalAmount.ToString("N0")</td></tr>
+                    <tr><th>Giảm giá</th><td class="text-end">@((Model.Discount ?? 0).ToString("N0"))</td></tr>
+                    <tr><th>Thành tiền</th><td class="text-end fw-semibold">@Model.FinalAmount.ToString("N0")</td></tr>
+                    <tr><th>Đã thanh toán</th><td class="text-end">@paidTotal.ToString("N0")</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Lịch sử thanh toán</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Phương thức</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end">Số tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.Payments.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">Chưa có giao dịch thanh toán.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var p in Model.Payments.OrderByDescending(x => x.PaidAt))
+                            {
+                                <tr>
+                                    <td>@p.PaidAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@p.PaymentMethod</td>
+                                    <td><span class="badge bg-secondary">@p.Status</span></td>
+                                    <td class="text-end">@p.AmountPaid.ToString("N0")</td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        @@media print {
+            header, footer, nav, .btn { display: none !important; }
+            .card { border: none !important; }
+        }
+    </style>
+}
+

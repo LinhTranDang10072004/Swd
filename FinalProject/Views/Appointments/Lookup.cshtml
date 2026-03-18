@@ -1,0 +1,38 @@
+@model FinalProject.ViewModels.AppointmentLookupViewModel
+@{
+    ViewData["Title"] = "Thêm mới lịch hẹn";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Thêm mới lịch hẹn</h2>
+        <div class="text-muted">Nhập CMND/CCCD để tìm bệnh nhân</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Appointments" asp-action="Index">Về danh sách</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Lookup" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label asp-for="NationalId" class="form-label"></label>
+                <input asp-for="NationalId" class="form-control" autofocus />
+                <span asp-validation-for="NationalId" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Tìm bệnh nhân</button>
+                <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Receptionist">Về dashboard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,61 @@
+@model FinalProject.ViewModels.AppointmentCreateViewModel
+@{
+    ViewData["Title"] = "Đặt lịch hẹn";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Đặt lịch hẹn</h2>
+        <div class="text-muted">
+            Bệnh nhân: <strong>@Model.PatientFullName</strong>
+            @if (!string.IsNullOrWhiteSpace(Model.PatientNationalId))
+            {
+                <span class="ms-2">(@Model.PatientNationalId)</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="CreateAppointment" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="PatientId" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="DoctorId" class="form-label"></label>
+                        <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select">
+                            <option value="">-- Chọn bác sĩ --</option>
+                        </select>
+                        <span asp-validation-for="DoctorId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AppointmentDate" class="form-label"></label>
+                        <input asp-for="AppointmentDate" class="form-control" />
+                        <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Reason" class="form-label"></label>
+                        <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Reason" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Lưu lịch hẹn</button>
+                    <a asp-action="Appointments" class="btn btn-outline-secondary ms-2">Quay lại</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

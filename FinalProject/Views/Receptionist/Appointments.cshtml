@@ -1,0 +1,61 @@
+@model List<FinalProject.Models.Appointment>
+@{
+    ViewData["Title"] = "Quản lý lịch hẹn";
+    var success = TempData["Success"] as string;
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">Quản lý lịch hẹn</h2>
+        <div class="text-muted">Danh sách lịch hẹn gần đây.</div>
+    </div>
+    <div>
+        <a asp-action="NewAppointment" class="btn btn-primary">+ Thêm mới lịch hẹn</a>
+        <a asp-action="RegisterPatient" class="btn btn-outline-secondary ms-2">Đăng ký bệnh nhân</a>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(success))
+{
+    <div class="alert alert-success">@success</div>
+}
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0 align-middle">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Thời gian</th>
+                <th>Bệnh nhân</th>
+                <th>CMND/CCCD</th>
+                <th>Bác sĩ</th>
+                <th>Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">Chưa có lịch hẹn.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.AppointmentId</td>
+                        <td>@a.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@a.Patient?.FullName</td>
+                        <td>@a.Patient?.NationalId</td>
+                        <td>@(a.Doctor?.User?.FullName ?? ("DoctorId=" + a.DoctorId))</td>
+                        <td><span class="badge text-bg-secondary">@a.Status</span></td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
