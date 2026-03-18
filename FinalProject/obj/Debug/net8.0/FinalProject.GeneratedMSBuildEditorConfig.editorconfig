@@ -9,129 +9,161 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FinalProject
 build_property.RootNamespace = FinalProject
-build_property.ProjectDir = C:\Users\letha\OneDrive\Documents\Kỳ7\SWD\FinalProject\FinalProject\
+build_property.ProjectDir = E:\Git_SWD392\Swd\FinalProject\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\letha\OneDrive\Documents\Kỳ7\SWD\FinalProject\FinalProject
+build_property.MSBuildProjectDirectory = E:\Git_SWD392\Swd\FinalProject
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Account/AccessDenied.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Account/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Account/Login.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Appointments/Create.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Appointments/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Appointments/Index.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Appointments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Appointments/Lookup.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Appointments/Lookup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwb2ludG1lbnRzXExvb2t1cC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dashboard/Doctor.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Dashboard/Doctor.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXERvY3Rvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dashboard/Manager.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Dashboard/Manager.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXE1hbmFnZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dashboard/Patient.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Dashboard/Patient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFBhdGllbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dashboard/Pharmacist.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Dashboard/Pharmacist.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFBoYXJtYWNpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dashboard/Receptionist.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Dashboard/Receptionist.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFJlY2VwdGlvbmlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Home/Index.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/DoctorSchedule/Cancel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcQ2FuY2VsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/DoctorSchedule/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/DoctorSchedule/Reschedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcUmVzY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Home/Privacy.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientAppointments/Book.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/MedicalRecord/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/MedicalRecord/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/MedicalRecord/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/MedicalRecord/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/MedicalRecord/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientAppointments/Book.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudEFwcG9pbnRtZW50c1xCb29rLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientAppointments/Index.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientAppointments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudEFwcG9pbnRtZW50c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientBilling/Invoice.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientBilling/Invoice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudEJpbGxpbmdcSW52b2ljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientBilling/Invoices.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientBilling/Invoices.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudEJpbGxpbmdcSW52b2ljZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientBilling/Payments.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientBilling/Payments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudEJpbGxpbmdcUGF5bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientDoctors/Details.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientDoctors/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudERvY3RvcnNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientDoctors/Index.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/PatientDoctors/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudERvY3RvcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Patients/Create.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Patients/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Receptionist/Appointments.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Receptionist/Appointments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZXB0aW9uaXN0XEFwcG9pbnRtZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Receptionist/CreateAppointment.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Receptionist/CreateAppointment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZXB0aW9uaXN0XENyZWF0ZUFwcG9pbnRtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Receptionist/NewAppointment.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Receptionist/NewAppointment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZXB0aW9uaXN0XE5ld0FwcG9pbnRtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Receptionist/RegisterPatient.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Receptionist/RegisterPatient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjZXB0aW9uaXN0XFJlZ2lzdGVyUGF0aWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Shared/Error.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Shared/_ValidationScriptsPartial.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/_ViewImports.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/_ViewStart.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Shared/_Layout.cshtml]
+[E:/Git_SWD392/Swd/FinalProject/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-1iqdgs6srz

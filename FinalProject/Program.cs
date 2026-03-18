@@ -26,7 +26,7 @@ builder.Services
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 builder.Services.AddAuthorization();
-builder.Services.AddSingleton<SWD392.ExternalSystem.EmailService>();
+builder.Services.AddSingleton<FinalProject.ExternalSystem.EmailService>();
 builder.Services.AddSingleton<FinalProject.Services.IEmailSender, FinalProject.Services.ExternalEmailSender>();
 
 var app = builder.Build();

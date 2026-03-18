@@ -1,0 +1,59 @@
+﻿@model FinalProject.Models.MedicalRecord
+
+<div class="container mt-4">
+    <h2>Create Medical Record</h2>
+    <hr />
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="alert alert-danger"></div>
+    }
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="PatientId" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Visit Date</label>
+                <input asp-for="VisitDate"
+                        type="datetime-local"
+                        class="form-control"
+                        value="@Model.VisitDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="VisitDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Status</label>
+                <select asp-for="Status" class="form-select">
+                    <option value="OPEN">OPEN</option>
+                    <option value="CLOSED">CLOSED</option>
+                    <option value="LOCKED">LOCKED</option>
+                    <option value="ARCHIVED">ARCHIVED</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Chief Complaint (Lý do khám)</label>
+            <textarea asp-for="ChiefComplaint" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Diagnosis (Chẩn đoán)</label>
+            <textarea asp-for="Diagnosis" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="Diagnosis" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Treatment (Hướng điều trị)</label>
+            <textarea asp-for="Treatment" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Notes</label>
+            <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success px-4">Save Record</button>
+            <a asp-action="History" asp-route-patientId="@Model.PatientId" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

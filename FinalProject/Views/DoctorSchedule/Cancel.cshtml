@@ -1,0 +1,45 @@
+﻿@model FinalProject.Models.Appointment
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4><i class="bi bi-exclamation-triangle"></i> Cancel Appointment</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-danger fw-bold">
+                Are you sure you want to cancel this appointment? This action will automatically notify the patient via email.
+            </p>
+
+            <div class="mb-4 bg-light p-3 rounded border">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Patient Name:</strong> <span class="text-primary">@Model.Patient?.FullName</span></p>
+                        <p><strong>Appointment Time:</strong> @Model.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Original Reason:</strong> @Model.Reason</p>
+                        <p><strong>Current Status:</strong> <span class="badge bg-success">@Model.Status</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="Cancel" method="post">
+                <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Reason for Cancellation <span class="text-danger">*</span></label>
+                    <textarea name="cancelReason" class="form-control" rows="3" required
+                              placeholder="Please enter the reason for cancellation (Required for reporting)..."></textarea>
+                    <small class="text-muted">This reason will be recorded in the system and included in the email sent to the patient.</small>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="bi bi-trash"></i> Confirm Cancellation
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">Keep Appointment</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
