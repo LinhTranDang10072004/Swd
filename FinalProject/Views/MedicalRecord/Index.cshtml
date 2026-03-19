@@ -1,0 +1,65 @@
+﻿@model IEnumerable<FinalProject.Models.Patient>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-people-fill"></i> Manage Medical Records</h2>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3">
+                <div class="col-md-10">
+                    <input type="text" name="searchTerm" class="form-control"
+                           placeholder="Search by Patient Name, Phone or National ID..."
+                           value="@Context.Request.Query["searchTerm"]" />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Gender</th>
+                    <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th>National ID</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-danger">
+                            No patients found matching your search.
+                        </td>
+                    </tr>
+                }
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@p.FullName</td>
+                        <td>@p.Gender</td>
+                        <td>@(p.DateOfBirth?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@p.Phone</td>
+                        <td>@p.NationalId</td>
+                        <td class="text-center">
+                            <a asp-action="History" asp-route-patientId="@p.PatientId"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-folder2-open"></i> View Medical History
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
