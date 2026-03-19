@@ -1,0 +1,29 @@
+@model FinalProject.ViewModels.ImportLookupViewModel
+
+@{
+    ViewData["Title"] = "Nhập thuốc";
+}
+
+<h2 class="mb-3">UC-32 - Nhập thuốc (theo PO)</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Index" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div class="col-md-6">
+                <label asp-for="OrderId" class="form-label"></label>
+                <input asp-for="OrderId" class="form-control" />
+                <span asp-validation-for="OrderId" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Tra PO</button>
+                <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Pharmacist">Về Dashboard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

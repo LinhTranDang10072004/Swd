@@ -1,0 +1,112 @@
+@model FinalProject.ViewModels.ImportReceiveViewModel
+
+@{
+    ViewData["Title"] = "Xác nhận nhập thuốc";
+}
+
+<h2 class="mb-2">Xác nhận nhập thuốc</h2>
+
+@if (TempData["Success"] is string okMsg)
+{
+    <div class="alert alert-success">@okMsg</div>
+}
+@if (TempData["Error"] is string errMsg)
+{
+    <div class="alert alert-danger">@errMsg</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div><strong>PO ID:</strong> @Model.OrderId</div>
+        <div><strong>Trạng thái PO:</strong> @Model.OrderStatus</div>
+        <div><strong>Nhà cung cấp:</strong> @Model.SupplierName (@Model.SupplierId)</div>
+    </div>
+</div>
+
+<form asp-action="Receive" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="OrderId" />
+    <input type="hidden" asp-for="OrderStatus" />
+    <input type="hidden" asp-for="SupplierId" />
+    <input type="hidden" asp-for="SupplierName" />
+
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                    <tr>
+                        <th>Thuốc</th>
+                        <th class="text-end">Đặt</th>
+                        <th class="text-end">Đã nhận</th>
+                        <th class="text-end">Nhận</th>
+                        <th>Batch</th>
+                        <th>NSX</th>
+                        <th>HSD</th>
+                        <th class="text-end">Giá vốn</th>
+                        <th class="text-end">Giá bán</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (var i = 0; i < Model.Items.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@Model.Items[i].MedicineName</div>
+                                <div class="text-muted small">MedicineId: @Model.Items[i].MedicineId</div>
+                                <input type="hidden" asp-for="Items[i].PurchaseOrderDetailId" />
+                                <input type="hidden" asp-for="Items[i].MedicineId" />
+                                <input type="hidden" asp-for="Items[i].MedicineName" />
+                                <input type="hidden" asp-for="Items[i].OrderedQty" />
+                                <input type="hidden" asp-for="Items[i].AlreadyReceivedQty" />
+                            </td>
+                            <td class="text-end">@Model.Items[i].OrderedQty</td>
+                            <td class="text-end">@Model.Items[i].AlreadyReceivedQty</td>
+                            <td style="max-width: 140px;">
+                                <input asp-for="Items[i].ReceiveQty" class="form-control form-control-sm text-end" />
+                                <span asp-validation-for="Items[i].ReceiveQty" class="text-danger small"></span>
+                            </td>
+                            <td style="max-width: 160px;">
+                                <input asp-for="Items[i].BatchNumber" class="form-control form-control-sm" />
+                                <span asp-validation-for="Items[i].BatchNumber" class="text-danger small"></span>
+                            </td>
+                            <td style="max-width: 140px;">
+                                <input asp-for="Items[i].ManufactureDate" class="form-control form-control-sm" />
+                                <span asp-validation-for="Items[i].ManufactureDate" class="text-danger small"></span>
+                            </td>
+                            <td style="max-width: 140px;">
+                                <input asp-for="Items[i].ExpirationDate" class="form-control form-control-sm" />
+                                <span asp-validation-for="Items[i].ExpirationDate" class="text-danger small"></span>
+                            </td>
+                            <td style="max-width: 140px;">
+                                <input asp-for="Items[i].UnitCost" class="form-control form-control-sm text-end" />
+                                <span asp-validation-for="Items[i].UnitCost" class="text-danger small"></span>
+                            </td>
+                            <td style="max-width: 140px;">
+                                <input asp-for="Items[i].SellingPrice" class="form-control form-control-sm text-end" />
+                                <span asp-validation-for="Items[i].SellingPrice" class="text-danger small"></span>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="submit">Confirm Import</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">Tra PO khác</a>
+                <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Pharmacist">Về Dashboard</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
