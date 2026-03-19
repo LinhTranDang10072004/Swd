@@ -1,0 +1,29 @@
+@model FinalProject.ViewModels.DispenseLookupViewModel
+
+@{
+    ViewData["Title"] = "Cấp phát thuốc";
+}
+
+<h2 class="mb-3">UC-29 - Cấp phát thuốc</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Index" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div class="col-md-6">
+                <label asp-for="PrescriptionId" class="form-label"></label>
+                <input asp-for="PrescriptionId" class="form-control" />
+                <span asp-validation-for="PrescriptionId" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Tra đơn</button>
+                <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Pharmacist">Về Dashboard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
