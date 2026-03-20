@@ -28,6 +28,9 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<SWD392.ExternalSystem.EmailService>();
 builder.Services.AddSingleton<FinalProject.Services.IEmailSender, FinalProject.Services.ExternalEmailSender>();
+builder.Services.AddScoped<FinalProject.Services.IAppointmentBookingService, FinalProject.Services.AppointmentBookingService>();
+builder.Services.AddScoped<FinalProject.Services.IInvoiceDetailService, FinalProject.Services.InvoiceDetailService>();
+builder.Services.AddSingleton<FinalProject.Services.IInvoicePdfExportService, FinalProject.Services.InvoicePdfExportService>();
 
 var app = builder.Build();
 

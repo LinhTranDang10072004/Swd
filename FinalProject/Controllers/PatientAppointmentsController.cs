@@ -14,13 +14,12 @@ namespace FinalProject.Controllers;
 public class PatientAppointmentsController : Controller
 {
     private readonly HospitalManagementContext _db;
-    private readonly IEmailSender _email;
-    private const int SlotMinutes = 30;
+    private readonly IAppointmentBookingService _booking;
 
-    public PatientAppointmentsController(HospitalManagementContext db, IEmailSender email)
+    public PatientAppointmentsController(HospitalManagementContext db, IAppointmentBookingService booking)
     {
         _db = db;
-        _email = email;
+        _booking = booking;
     }
 
     [HttpGet]
@@ -122,10 +121,14 @@ public class PatientAppointmentsController : Controller
             return View(vm);
         }
 
-        var slotOk = await IsSlotAvailable(vm.DoctorId, vm.AppointmentDate);
-        if (!slotOk)
+        var bookingResult = await _booking.ConfirmBookingAsync(
+            patientId.Value,
+            vm.DoctorId,
+            vm.AppointmentDate,
+            vm.Reason);
+        if (!bookingResult.Success)
         {
-            ModelState.AddModelError(nameof(vm.AppointmentDate), "Khung giờ đã được đặt hoặc bác sĩ không có lịch làm việc.");
+            ModelState.AddModelError(nameof(vm.AppointmentDate), bookingResult.ErrorMessage ?? "Không thể đặt lịch cho khung giờ này.");
             vm.Specialties = await _db.Specialties.AsNoTracking()
                 .OrderBy(s => s.SpecialtyName)
                 .Select(s => new SelectListItem { Value = s.SpecialtyId.ToString(), Text = s.SpecialtyName })
@@ -138,21 +141,6 @@ public class PatientAppointmentsController : Controller
                 .ToListAsync();
             return View(vm);
         }
-
-        var appt = new Appointment
-        {
-            PatientId = patientId.Value,
-            DoctorId = vm.DoctorId,
-            AppointmentDate = NormalizeToSlot(vm.AppointmentDate),
-            Reason = string.IsNullOrWhiteSpace(vm.Reason) ? null : vm.Reason.Trim(),
-            Status = "PENDING",
-            CreatedAt = DateTime.Now
-        };
-
-        _db.Appointments.Add(appt);
-        await _db.SaveChangesAsync();
-
-        await TrySendConfirmationEmail(patientId.Value, appt);
 
         TempData["Success"] = "Đặt lịch khám thành công. Vui lòng kiểm tra email để xác nhận.";
         return RedirectToAction(nameof(Index));
@@ -174,7 +162,7 @@ public class PatientAppointmentsController : Controller
     [HttpGet]
     public async Task<IActionResult> AvailableSlots(int doctorId, DateTime date)
     {
-        var slots = await GetAvailableSlotsForDay(doctorId, DateOnly.FromDateTime(date));
+        var slots = await _booking.GetAvailableSlotsForDayAsync(doctorId, DateOnly.FromDateTime(date));
         var result = slots.Select(dt => new
         {
             value = dt.ToString("yyyy-MM-ddTHH:mm"),
@@ -195,118 +183,6 @@ public class PatientAppointmentsController : Controller
             .Where(p => p.UserId == userId)
             .Select(p => (int?)p.PatientId)
             .FirstOrDefaultAsync();
-    }
-
-    private async Task TrySendConfirmationEmail(int patientId, Appointment appt)
-    {
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            email = await _db.Patients.AsNoTracking()
-                .Where(p => p.PatientId == patientId)
-                .Select(p => p.Email)
-                .FirstOrDefaultAsync();
-        }
-
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            return;
-        }
-
-        var doctorName = await _db.Doctors.AsNoTracking()
-            .Where(d => d.DoctorId == appt.DoctorId)
-            .Select(d => d.User.FullName)
-            .FirstOrDefaultAsync();
-
-        var subject = "Xác nhận đặt lịch khám";
-        var body = $@"
-            <div style=""font-family:Arial,sans-serif;font-size:14px"">
-              <h3>Xác nhận đặt lịch khám</h3>
-              <p>Bạn đã đặt lịch khám thành công.</p>
-              <ul>
-                <li><b>Bác sĩ</b>: {System.Net.WebUtility.HtmlEncode(doctorName ?? "")}</li>
-                <li><b>Thời gian</b>: {appt.AppointmentDate:dd/MM/yyyy HH:mm}</li>
-                <li><b>Trạng thái</b>: {System.Net.WebUtility.HtmlEncode(appt.Status)}</li>
-              </ul>
-              <p>Nếu thông tin không đúng, vui lòng liên hệ lễ tân để được hỗ trợ.</p>
-            </div>";
-
-        try
-        {
-            await _email.SendAsync(email, subject, body);
-        }
-        catch
-        {
-            // Ignore email errors (config may be missing)
-        }
-    }
-
-    private async Task<bool> IsSlotAvailable(int doctorId, DateTime slotStart)
-    {
-        var day = DateOnly.FromDateTime(slotStart);
-        var slots = await GetAvailableSlotsForDay(doctorId, day);
-        var normalized = NormalizeToSlot(slotStart);
-        return slots.Any(s => s == normalized);
-    }
-
-    private async Task<List<DateTime>> GetAvailableSlotsForDay(int doctorId, DateOnly day)
-    {
-        var doctor = await _db.Doctors.AsNoTracking()
-            .Where(d => d.DoctorId == doctorId)
-            .Select(d => new { d.DoctorId, d.UserId })
-            .FirstOrDefaultAsync();
-        if (doctor is null)
-        {
-            return new List<DateTime>();
-        }
-
-        var schedules = await _db.StaffSchedules.AsNoTracking()
-            .Where(s => s.UserId == doctor.UserId && s.ScheduleDate == day && s.Status == "SCHEDULED")
-            .OrderBy(s => s.StartTime)
-            .ToListAsync();
-
-        if (schedules.Count == 0)
-        {
-            return new List<DateTime>();
-        }
-
-        var startOfDay = day.ToDateTime(TimeOnly.MinValue);
-        var endOfDay = day.ToDateTime(TimeOnly.MaxValue);
-
-        var booked = await _db.Appointments.AsNoTracking()
-            .Where(a => a.DoctorId == doctorId
-                        && a.AppointmentDate >= startOfDay
-                        && a.AppointmentDate <= endOfDay
-                        && a.Status != "CANCELLED")
-            .Select(a => a.AppointmentDate)
-            .ToListAsync();
-
-        var bookedSlots = new HashSet<DateTime>(booked.Select(NormalizeToSlot));
-        var available = new List<DateTime>();
-
-        foreach (var sch in schedules)
-        {
-            var start = day.ToDateTime(sch.StartTime);
-            var end = day.ToDateTime(sch.EndTime);
-            start = NormalizeToSlot(start);
-
-            for (var t = start; t.AddMinutes(SlotMinutes) <= end; t = t.AddMinutes(SlotMinutes))
-            {
-                if (!bookedSlots.Contains(t) && t >= DateTime.Now.AddMinutes(-SlotMinutes))
-                {
-                    available.Add(t);
-                }
-            }
-        }
-
-        return available.Distinct().OrderBy(x => x).ToList();
-    }
-
-    private static DateTime NormalizeToSlot(DateTime dt)
-    {
-        var truncated = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0);
-        var minute = truncated.Minute - (truncated.Minute % SlotMinutes);
-        return new DateTime(truncated.Year, truncated.Month, truncated.Day, truncated.Hour, minute, 0);
     }
 }
 

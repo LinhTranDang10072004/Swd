@@ -4,6 +4,7 @@ using FinalProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FinalProject.Services;
 
 namespace FinalProject.Controllers;
 
@@ -11,14 +12,21 @@ namespace FinalProject.Controllers;
 public class PatientBillingController : Controller
 {
     private readonly HospitalManagementContext _db;
+    private readonly IInvoiceDetailService _invoiceDetailService;
+    private readonly IInvoicePdfExportService _invoicePdfExportService;
 
-    public PatientBillingController(HospitalManagementContext db)
+    public PatientBillingController(
+        HospitalManagementContext db,
+        IInvoiceDetailService invoiceDetailService,
+        IInvoicePdfExportService invoicePdfExportService)
     {
         _db = db;
+        _invoiceDetailService = invoiceDetailService;
+        _invoicePdfExportService = invoicePdfExportService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Invoices()
+    public async Task<IActionResult> Invoices(string? filterStatus = "ALL")
     {
         var patientId = await GetCurrentPatientId();
         if (patientId is null)
@@ -26,15 +34,21 @@ public class PatientBillingController : Controller
             return Forbid();
         }
 
-        var invoices = await _db.Invoices.AsNoTracking()
-            .Where(i => i.PatientId == patientId.Value)
-            .Include(i => i.Appointment)!.ThenInclude(a => a!.Doctor).ThenInclude(d => d!.User)
-            .Include(i => i.Payments)
-            .OrderByDescending(i => i.IssuedAt)
-            .Take(200)
-            .ToListAsync();
+        ViewData["FilterStatus"] = filterStatus ?? "ALL";
 
-        return View(invoices);
+        var invoices = await _invoiceDetailService.GetInvoicesForPatientAsync(patientId.Value);
+
+        IEnumerable<Invoice> filtered = invoices;
+        if (string.Equals(filterStatus, "PAID", StringComparison.OrdinalIgnoreCase))
+        {
+            filtered = invoices.Where(IsInvoicePaid);
+        }
+        else if (string.Equals(filterStatus, "UNPAID", StringComparison.OrdinalIgnoreCase))
+        {
+            filtered = invoices.Where(inv => !IsInvoicePaid(inv));
+        }
+
+        return View(filtered.ToList());
     }
 
     [HttpGet]
@@ -46,12 +60,20 @@ public class PatientBillingController : Controller
             return Forbid();
         }
 
-        var invoice = await _db.Invoices.AsNoTracking()
-            .Where(i => i.InvoiceId == id && i.PatientId == patientId.Value)
-            .Include(i => i.Patient)
-            .Include(i => i.Appointment)!.ThenInclude(a => a!.Doctor).ThenInclude(d => d!.User)
-            .Include(i => i.Payments)
-            .FirstOrDefaultAsync();
+        // Security & privacy NFR (broken access control prevention):
+        // The controller checks that the invoice belongs to the logged-in patient.
+        var ownerPatientId = await _invoiceDetailService.GetInvoiceOwnerPatientIdAsync(id);
+        if (ownerPatientId is null)
+        {
+            return NotFound();
+        }
+
+        if (ownerPatientId.Value != patientId.Value)
+        {
+            return Forbid();
+        }
+
+        var invoice = await _invoiceDetailService.GetDetailedBreakdownAsync(id);
 
         if (invoice is null)
         {
@@ -89,21 +111,26 @@ public class PatientBillingController : Controller
             return Forbid();
         }
 
-        var invoice = await _db.Invoices.AsNoTracking()
-            .Where(i => i.InvoiceId == id && i.PatientId == patientId.Value)
-            .Include(i => i.Patient)
-            .Include(i => i.Appointment)!.ThenInclude(a => a!.Doctor).ThenInclude(d => d!.User)
-            .Include(i => i.Payments)
-            .FirstOrDefaultAsync();
+        var ownerPatientId = await _invoiceDetailService.GetInvoiceOwnerPatientIdAsync(id);
+        if (ownerPatientId is null)
+        {
+            return NotFound();
+        }
+
+        if (ownerPatientId.Value != patientId.Value)
+        {
+            return Forbid();
+        }
+
+        var invoice = await _invoiceDetailService.GetDetailedBreakdownAsync(id);
 
         if (invoice is null)
         {
             return NotFound();
         }
 
-        var html = await RenderInvoiceHtml(invoice);
-        var bytes = System.Text.Encoding.UTF8.GetBytes(html);
-        return File(bytes, "text/html; charset=utf-8", $"invoice_{invoice.InvoiceId}.html");
+        var export = await _invoicePdfExportService.GenerateInvoicePDFAsync(invoice);
+        return File(export.Content, export.ContentType, export.FileName);
     }
 
     private async Task<int?> GetCurrentPatientId()
@@ -120,64 +147,10 @@ public class PatientBillingController : Controller
             .FirstOrDefaultAsync();
     }
 
-    private static Task<string> RenderInvoiceHtml(Invoice invoice)
+    private static bool IsInvoicePaid(Invoice invoice)
     {
         var paidTotal = invoice.Payments.Where(p => p.Status == "SUCCESS").Sum(p => p.AmountPaid);
-        var isPaid = string.Equals(invoice.Status, "PAID", StringComparison.OrdinalIgnoreCase) || paidTotal >= invoice.FinalAmount;
-        var doctorName = invoice.Appointment?.Doctor?.User?.FullName ?? "";
-        var apptTime = invoice.Appointment?.AppointmentDate.ToString("dd/MM/yyyy HH:mm") ?? "";
-
-        var html = $@"
-<!doctype html>
-<html>
-<head>
-  <meta charset=""utf-8"" />
-  <title>Invoice #{invoice.InvoiceId}</title>
-  <style>
-    body {{ font-family: Arial, sans-serif; margin: 24px; }}
-    .muted {{ color: #666; }}
-    table {{ border-collapse: collapse; width: 100%; margin-top: 16px; }}
-    th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
-    th {{ background: #f5f5f5; }}
-    .right {{ text-align: right; }}
-    @media print {{ .no-print {{ display: none; }} body {{ margin: 0; }} }}
-  </style>
-</head>
-<body>
-  <div class=""no-print"" style=""margin-bottom:12px;"">
-    <button onclick=""window.print()"">In hóa đơn</button>
-  </div>
-  <h2>Hóa đơn #{invoice.InvoiceId}</h2>
-  <div class=""muted"">Ngày xuất: {invoice.IssuedAt:dd/MM/yyyy HH:mm}</div>
-  <div style=""margin-top:12px;"">
-    <div><b>Bệnh nhân</b>: {System.Net.WebUtility.HtmlEncode(invoice.Patient.FullName)}</div>
-    <div><b>Trạng thái</b>: {(isPaid ? "PAID" : invoice.Status)}</div>
-    <div><b>Lịch hẹn</b>: {System.Net.WebUtility.HtmlEncode(doctorName)} - {apptTime}</div>
-  </div>
-
-  <table>
-    <tr><th>Tổng tiền</th><td class=""right"">{invoice.TotalAmount:N0}</td></tr>
-    <tr><th>Giảm giá</th><td class=""right"">{(invoice.Discount ?? 0):N0}</td></tr>
-    <tr><th>Thành tiền</th><td class=""right"">{invoice.FinalAmount:N0}</td></tr>
-    <tr><th>Đã thanh toán</th><td class=""right"">{paidTotal:N0}</td></tr>
-  </table>
-
-  <h3>Chi tiết thanh toán</h3>
-  <table>
-    <thead>
-      <tr><th>Thời gian</th><th>Phương thức</th><th>Trạng thái</th><th class=""right"">Số tiền</th></tr>
-    </thead>
-    <tbody>
-      {(invoice.Payments.Count == 0 ? "<tr><td colspan=\"4\" class=\"muted\">Chưa có giao dịch thanh toán.</td></tr>" :
-        string.Join("", invoice.Payments.OrderByDescending(p => p.PaidAt).Select(p =>
-          $"<tr><td>{p.PaidAt:dd/MM/yyyy HH:mm}</td><td>{System.Net.WebUtility.HtmlEncode(p.PaymentMethod)}</td><td>{System.Net.WebUtility.HtmlEncode(p.Status)}</td><td class=\"right\">{p.AmountPaid:N0}</td></tr>"
-        )))}
-    </tbody>
-  </table>
-</body>
-</html>";
-
-        return Task.FromResult(html);
+        return string.Equals(invoice.Status, "PAID", StringComparison.OrdinalIgnoreCase) || paidTotal >= invoice.FinalAmount;
     }
 }
 

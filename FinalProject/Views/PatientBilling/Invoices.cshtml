@@ -1,6 +1,7 @@
 @model List<FinalProject.Models.Invoice>
 @{
     ViewData["Title"] = "Hóa đơn của tôi";
+    var currentFilter = (ViewData["FilterStatus"] as string) ?? "ALL";
 }
 
 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -12,6 +13,21 @@
         <a class="btn btn-outline-secondary" asp-action="Payments">Lịch sử thanh toán</a>
         <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Patient">Về dashboard</a>
     </div>
+</div>
+
+<div class="mb-3">
+    <form method="get" asp-action="Invoices" class="row g-2 align-items-end">
+        <div class="col-auto">
+            <label class="form-label mb-0">Lọc theo thanh toán</label>
+        </div>
+        <div class="col-auto">
+            <select name="filterStatus" class="form-select" onchange="this.form.submit()">
+                <option value="ALL" selected="@(string.Equals(currentFilter, "ALL", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">Tất cả</option>
+                <option value="PAID" selected="@(string.Equals(currentFilter, "PAID", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">Đã thanh toán</option>
+                <option value="UNPAID" selected="@(string.Equals(currentFilter, "UNPAID", System.StringComparison.OrdinalIgnoreCase) ? "selected" : null)">Chưa thanh toán</option>
+            </select>
+        </div>
+    </form>
 </div>
 
 <div class="card">
