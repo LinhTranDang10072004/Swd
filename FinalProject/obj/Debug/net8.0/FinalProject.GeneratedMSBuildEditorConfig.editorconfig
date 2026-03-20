@@ -60,12 +60,60 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFJlY2VwdGlvbmlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dispense/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGVuc2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Dispense/Review.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGVuc2VcUmV2aWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/DoctorSchedule/Cancel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcQ2FuY2VsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/DoctorSchedule/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/DoctorSchedule/Reschedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdG9yU2NoZWR1bGVcUmVzY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/ImportMedicine/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW1wb3J0TWVkaWNpbmVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/ImportMedicine/Receive.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW1wb3J0TWVkaWNpbmVcUmVjZWl2ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/MedicalRecord/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/MedicalRecord/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/MedicalRecord/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/MedicalRecord/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/MedicalRecord/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbFJlY29yZFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/letha/OneDrive/Documents/Kỳ7/SWD/FinalProject/FinalProject/Views/PatientAppointments/Book.cshtml]

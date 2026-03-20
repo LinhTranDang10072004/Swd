@@ -29,11 +29,11 @@ public partial class MedicalRecord
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
-    public virtual Doctor Doctor { get; set; } = null!;
+    public virtual Doctor? Doctor { get; set; } = null!;
 
     public virtual ICollection<LabOrder> LabOrders { get; set; } = new List<LabOrder>();
 
-    public virtual Patient Patient { get; set; } = null!;
+    public virtual Patient? Patient { get; set; } = null!;
 
     public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 }

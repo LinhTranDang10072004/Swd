@@ -1,0 +1,61 @@
+﻿@model IEnumerable<FinalProject.Models.MedicalRecord>
+@{
+    var patient = ViewBag.Patient as FinalProject.Models.Patient;
+}
+
+<h2>Medical History: @patient.FullName</h2>
+
+<div class="mb-3">
+    <a asp-action="Create" asp-route-patientId="@patient.PatientId" class="btn btn-primary">Create New Record</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Search</a>
+</div>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">@ViewBag.Message</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Diagnosis</th>
+                <th>Doctor</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.VisitDate.ToShortDateString()</td>
+                    <td>@item.Diagnosis</td>
+                    <td>@item.DoctorId</td>
+                    <td><span class="badge bg-info">@item.Status</span></td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.RecordId" class="btn btn-sm btn-outline-info">View</a>
+                        @if (item.Status != "LOCKED" && item.Status != "ARCHIVED" && item.Status != "CLOSED")
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.RecordId" class="btn btn-sm btn-outline-warning">Edit</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

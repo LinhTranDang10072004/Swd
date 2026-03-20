@@ -1,0 +1,94 @@
+@model FinalProject.ViewModels.DispenseReviewViewModel
+
+@{
+    ViewData["Title"] = "Xác nhận cấp phát";
+}
+
+<h2 class="mb-2">Xác nhận cấp phát</h2>
+
+@if (TempData["Success"] is string okMsg)
+{
+    <div class="alert alert-success">@okMsg</div>
+}
+@if (TempData["Error"] is string errMsg)
+{
+    <div class="alert alert-danger">@errMsg</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div><strong>Prescription ID:</strong> @Model.PrescriptionId</div>
+        <div><strong>Trạng thái:</strong> @Model.PrescriptionStatus</div>
+        <div><strong>Bệnh nhân:</strong> @(Model.PatientName ?? "(n/a)")</div>
+        <div><strong>Ngày kê:</strong> @Model.IssuedAt.ToString("yyyy-MM-dd HH:mm")</div>
+        <div class="text-muted mt-2">
+            Điều kiện chạy UC-29: đơn phải ở trạng thái <code>READY_TO_DISPENSE</code>.
+        </div>
+    </div>
+</div>
+
+<form asp-action="Confirm" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="PrescriptionId" />
+    <input type="hidden" asp-for="PrescriptionStatus" />
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                    <tr>
+                        <th>Thuốc</th>
+                        <th class="text-end">Kê</th>
+                        <th class="text-end">Tồn</th>
+                        <th class="text-end">Phát</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (var i = 0; i < Model.Items.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@Model.Items[i].MedicineName</div>
+                                <div class="text-muted small">MedicineId: @Model.Items[i].MedicineId</div>
+                                <input type="hidden" asp-for="Items[i].PrescriptionDetailId" />
+                                <input type="hidden" asp-for="Items[i].MedicineId" />
+                                <input type="hidden" asp-for="Items[i].MedicineName" />
+                                <input type="hidden" asp-for="Items[i].PrescribedQty" />
+                                <input type="hidden" asp-for="Items[i].AvailableQty" />
+                            </td>
+                            <td class="text-end">@Model.Items[i].PrescribedQty</td>
+                            <td class="text-end">
+                                @Model.Items[i].AvailableQty
+                                @if (Model.Items[i].AvailableQty == 0)
+                                {
+                                    <div class="text-danger small">Out of stock</div>
+                                }
+                                else if (Model.Items[i].AvailableQty < Model.Items[i].PrescribedQty)
+                                {
+                                    <div class="text-warning small">Thiếu hàng (có thể phát một phần)</div>
+                                }
+                            </td>
+                            <td style="max-width: 160px;">
+                                <input asp-for="Items[i].DispenseQty" class="form-control form-control-sm text-end" />
+                                <span asp-validation-for="Items[i].DispenseQty" class="text-danger small"></span>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="submit">Confirm Dispense</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">Tra đơn khác</a>
+                <a class="btn btn-outline-secondary" asp-controller="Dashboard" asp-action="Pharmacist">Về Dashboard</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
